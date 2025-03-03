@@ -1,11 +1,16 @@
-import { Pact } from "@pact-foundation/pact";
+import * as Pact from '@pact-foundation/pact';
 import axios from "axios";
-import { getUser, User } from "./api/userApi";
+import { getUserDetails, User } from "./../api/userApi";
+import path from "path";
 
-const pact = new Pact({
+const pact = new Pact.Pact({
     consumer: "ReactFrontend",
-    provider: "PHPBackend",
+    provider: "Backend",
     port: 1234,
+    host: '127.0.0.1',
+    dir: path.resolve(process.cwd(), 'pacts'),
+    log: path.resolve(process.cwd(), 'logs', 'pact.log'),
+    logLevel: "debug",
 });
 
 describe("User API Contract Test", () => {
@@ -18,12 +23,15 @@ describe("User API Contract Test", () => {
             uponReceiving: "a request for user 1",
             withRequest: {
                 method: "GET",
-                path: "/users/1",
+                path: "/api/users/1",
             },
             willRespondWith: {
                 status: 200,
                 headers: { "Content-Type": "application/json" },
-                body: { id: 1, name: "Alice" },
+                body: Pact.Matchers.somethingLike({
+                    id: 1,
+                    name: "Alice",
+                }),
             },
         });
 
@@ -31,8 +39,11 @@ describe("User API Contract Test", () => {
         axios.defaults.baseURL = "http://localhost:1234";
 
         // Make a request and verify the response
-        const response: User = await getUser(1);
-        expect(response).toEqual({ id: 1, name: "Alice" });
+        const response: User = await getUserDetails(1);
+        expect(response).toEqual({
+            id: 1,
+            name: "Alice",
+        });
 
         await pact.verify();
     });

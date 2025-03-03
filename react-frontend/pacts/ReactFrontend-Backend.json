@@ -1,0 +1,45 @@
+{
+  "consumer": {
+    "name": "ReactFrontend"
+  },
+  "interactions": [
+    {
+      "description": "a request for user 1",
+      "providerState": "User with ID 1 exists",
+      "request": {
+        "method": "GET",
+        "path": "/api/users/1"
+      },
+      "response": {
+        "body": {
+          "id": 1,
+          "name": "Alice"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        },
+        "status": 200
+      }
+    }
+  ],
+  "metadata": {
+    "pact-js": {
+      "version": "14.0.0"
+    },
+    "pactRust": {
+      "ffi": "0.4.22",
+      "models": "1.2.3"
+    },
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  },
+  "provider": {
+    "name": "Backend"
+  }
+}

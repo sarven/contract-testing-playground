@@ -9,7 +9,7 @@
     "lint": "eslint ",
     "preview": "vite preview",
     "test:unit": "jest --config jest.config.unit.cjs",
-    "test:pact": "jest --config jest.config.pact.cjs"
+    "test:contract": "jest --config jest.config.pact.cjs"
   },
   "dependencies": {
     "react": "^19.0.0",

@@ -1,4 +1,3 @@
 module.exports = {
-    testMatch: ["**/?(*.)+(spec|test).[jt]s?(x)"],
-    testPathIgnorePatterns: ["/node_modules/", "/src/pact/"],
+    testMatch: ['<rootDir>/src/pact/**/*.test.{js,jsx,ts,tsx}'],
 };

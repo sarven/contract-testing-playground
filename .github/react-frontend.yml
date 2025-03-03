@@ -1,0 +1,41 @@
+name: React Frontend
+
+on:
+  push:
+    paths:
+      - 'react-frontend/**'
+    branches:
+      - main
+  pull_request:
+    paths:
+      - 'react-frontend/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:24.0.2
+        options: --privileged
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Compose
+        working-directory: react-frontend
+        run: docker-compose up -d
+
+      - name: Run unit tests
+        working-directory: react-frontend
+        run: make test-unit
+
+      - name: Run Pact contract tests
+        working-directory: react-frontend
+        run: make test-contract
+
+      - name: Stop Docker Compose services
+        if: always()
+        working-directory: react-frontend
+        run: docker-compose down

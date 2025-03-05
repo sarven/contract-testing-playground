@@ -8,3 +8,7 @@ RUN docker-php-ext-install opcache pdo pdo_pgsql ffi
 RUN docker-php-ext-configure ffi
 
 USER www-data
+
+COPY composer.json composer.lock ./
+RUN composer install
+RUN npm install

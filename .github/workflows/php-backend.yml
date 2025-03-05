@@ -35,6 +35,10 @@ jobs:
         working-directory: php-consumer-backend
         run: make up
 
+      - name: Composer install
+        working-directory: php-consumer-backend
+        run: make composer-install
+
       - name: Run Pact contract tests
         working-directory: php-consumer-backend
         run: make test-contract

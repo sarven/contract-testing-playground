@@ -3,7 +3,7 @@ services:
     container_name: app
     build: .
     volumes:
-      - .:/var/www/html:uid=1001,gid=1001
+      - .:/var/www/html
     networks:
       - app_network
     working_dir: /var/www/html

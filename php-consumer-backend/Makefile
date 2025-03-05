@@ -1,6 +1,9 @@
 build:
 	docker compose build
 
+composer-install:
+	docker compose exec app composer install
+
 up:
 	docker compose up -d
 

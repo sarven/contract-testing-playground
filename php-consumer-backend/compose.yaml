@@ -1,0 +1,12 @@
+services:
+  app:
+    container_name: app
+    build: .
+    volumes:
+      - .:/var/www/html:uid=1001,gid=1001
+    networks:
+      - app_network
+    working_dir: /var/www/html
+networks:
+  app_network:
+    name: app_network

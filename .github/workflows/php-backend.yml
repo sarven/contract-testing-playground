@@ -1,0 +1,45 @@
+name: PHP Backend
+
+on:
+  push:
+    paths:
+      - 'php-consumer-backend/**'
+    branches:
+      - main
+  pull_request:
+    paths:
+      - 'php-consumer-backend/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:24.0.2
+        options: --privileged
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+      - name: Verify Docker Compose Installation
+        run: docker-compose --version
+
+      - name: Set up Docker Compose
+        working-directory: php-consumer-backend
+        run: make up
+
+      - name: Run Pact contract tests
+        working-directory: php-consumer-backend
+        run: make test-contract
+
+      - name: Stop Docker Compose services
+        if: always()
+        working-directory: php-consumer-backend
+        run: docker-compose down

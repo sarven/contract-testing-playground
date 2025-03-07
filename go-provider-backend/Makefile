@@ -12,9 +12,5 @@ bash:
 test:
 	docker compose exec app go test ./tests/...
 
-wait-for-app:
-	echo "Waiting for app service to be healthy..."
-	docker compose exec app sh -c 'while ! nc -z localhost 8080; do sleep 1; done'
-
-migrate: wait-for-app
+migrate:
 	docker compose exec app sh -c 'migrate -database "$$DATABASE_URL" -source file://migrations up'

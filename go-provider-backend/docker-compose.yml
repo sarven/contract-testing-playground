@@ -9,6 +9,8 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+    networks:
+      - app_network
 
   app:
     build: .
@@ -18,6 +20,12 @@ services:
       - db
     env_file:
       - .env
+    networks:
+      - app_network
 
 volumes:
   db_data:
+
+networks:
+  app_network:
+    name: app_network

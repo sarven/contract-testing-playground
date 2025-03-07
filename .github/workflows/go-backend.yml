@@ -1,0 +1,49 @@
+name: PHP Backend
+
+on:
+  push:
+    paths:
+      - 'go-provider-backend/**'
+    branches:
+      - main
+  pull_request:
+    paths:
+      - 'go-provider-backend/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:24.0.2
+        options: --privileged
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+      - name: Verify Docker Compose Installation
+        run: docker-compose --version
+
+      - name: Set up Docker Compose
+        working-directory: go-provider-backend
+        run: make up
+
+      - name: Database migrations
+        working-directory: go-provider-backend
+        run: make migrate
+
+      - name: Run tests
+        working-directory: go-provider-backend
+        run: make test
+
+      - name: Stop Docker Compose services
+        if: always()
+        working-directory: go-provider-backend
+        run: docker-compose down

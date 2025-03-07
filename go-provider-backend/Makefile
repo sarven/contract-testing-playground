@@ -1,4 +1,4 @@
-.PHONY: build run test
+.PHONY: build up bash test migrate
 
 build:
 	docker compose build

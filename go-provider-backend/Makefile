@@ -14,3 +14,4 @@ test:
 
 migrate:
 	docker compose exec app sh -c 'migrate -database "$$DATABASE_URL" -source file://migrations up'
+

@@ -33,7 +33,7 @@ jobs:
 
       - name: Set up Docker Compose
         working-directory: go-provider-backend
-        run: make up
+        run: make build && make up && docker compose logs
 
       - name: Database migrations
         working-directory: go-provider-backend

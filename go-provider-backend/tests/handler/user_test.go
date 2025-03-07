@@ -1,42 +1,63 @@
 package tests
 
 import (
-//     "context"
-    "encoding/json"
-    "net/http"
-    "testing"
-    "go-rest-api/internal/model"
-//     "github.com/jackc/pgx/v5"
-//     "log"
+	"context"
+	"encoding/json"
+	"fmt"
+	"github.com/jackc/pgx/v5"
+	"go-rest-api/internal/model"
+	"go-rest-api/internal/repository"
+	"go-rest-api/internal/server"
+	"log"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"testing"
 )
 
 func TestGetUser(t *testing.T) {
-    // Create an HTTP client and make a request to the endpoint
-    client := &http.Client{}
-    req, err := http.NewRequest("GET", "http://localhost:8080/user/1", nil)
-    if err != nil {
-        t.Fatal(err)
-    }
+	// Given
+	dbURL := os.Getenv("DATABASE_URL")
+	if dbURL == "" {
+		log.Fatal("DATABASE_URL is not set")
+	}
 
-    resp, err := client.Do(req)
-    if err != nil {
-        t.Fatal(err)
-    }
-    defer resp.Body.Close()
+	conn, err := pgx.Connect(context.Background(), dbURL)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+	defer conn.Close(context.Background())
 
-    // Check the status code
-    if status := resp.StatusCode; status != http.StatusOK {
-        t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
-    }
+	repo := &repository.PostgresUserRepository{Conn: conn}
 
-    // Check the response body
-    var responseUser model.User
-    err = json.NewDecoder(resp.Body).Decode(&responseUser)
-    if err != nil {
-        t.Fatal(err)
-    }
+	user := &model.User{
+		Name:  "John Doe",
+		Email: "john.doe@example.com",
+	}
+	err = repo.CreateUser(context.Background(), user)
+	if err != nil {
+		t.Fatalf("Failed to add user to database: %v", err)
+	}
 
-    if responseUser != *user {
-        t.Errorf("handler returned unexpected body: got %v want %v", responseUser, *user)
-    }
+	// When
+	router := server.SetupServer()
+	req, _ := http.NewRequest("GET", fmt.Sprintf("/users/%d", user.ID), nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	// Then
+	if http.StatusOK != rr.Code {
+		t.Errorf("Expected response code %d. Got %d\n", http.StatusOK, rr.Code)
+	}
+
+	var returnedUser model.User
+	err = json.NewDecoder(rr.Body).Decode(&returnedUser)
+	if err != nil {
+		t.Fatalf("Failed to decode response body: %v", err)
+	}
+
+	if returnedUser.Name != user.Name || returnedUser.Email != user.Email {
+		t.Errorf("Expected user %v. Got %v\n", user, returnedUser)
+	}
 }

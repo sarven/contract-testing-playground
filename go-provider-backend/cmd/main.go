@@ -1,14 +1,16 @@
 package main
 
 import (
-    "log"
-    "net/http"
-    "go-rest-api/internal/handler"
-    "github.com/gorilla/mux"
+	"fmt"
+	"go-rest-api/internal/server"
+	"log"
+	"net/http"
 )
 
 func main() {
-    r := mux.NewRouter()
-    r.HandleFunc("/user/{id}", handler.GetUser).Methods("GET")
-    log.Fatal(http.ListenAndServe(":8080", r))
+	port := 8080
+	router := server.SetupServer()
+
+	log.Printf("Server running on port %d", port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), router))
 }

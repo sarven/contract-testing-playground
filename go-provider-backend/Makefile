@@ -1,13 +1,16 @@
 .PHONY: build run test
 
 build:
-	docker-compose build
+	docker compose build
 
 up:
-	docker-compose up -d
+	docker compose up -d
 
 bash:
-	docker-compose exec app bin/sh
+	docker compose exec app /bin/sh
 
 test:
-	go test ./tests/...
+	docker compose exec app go test ./tests/...
+
+migrate:
+	docker compose exec app sh -c 'migrate -database "$$DATABASE_URL" -source file://migrations up'

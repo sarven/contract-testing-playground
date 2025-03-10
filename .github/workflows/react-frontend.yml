@@ -43,6 +43,10 @@ jobs:
         working-directory: react-frontend
         run: make test-contract
 
+      - name: Get commit hash
+        id: get_commit
+        run: echo "::set-output name=commit_hash::$(git rev-parse HEAD)"
+
       - name: Publish Pact contracts
         working-directory: react-frontend
         run: make publish-contracts

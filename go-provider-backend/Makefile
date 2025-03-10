@@ -1,4 +1,4 @@
-.PHONY: build up bash test migrate
+.PHONY: build up bash test migrate test-contract
 
 build:
 	docker compose build

@@ -42,6 +42,10 @@ jobs:
       - name: Run Pact contract tests
         working-directory: react-frontend
         run: make test-contract
+
+      - name: Publish Pact contracts
+        working-directory: react-frontend
+        run: make publish-contracts
         env:
           PACT_BROKER_URL: ${{ secrets.PACT_BROKER_URL }}
           PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}

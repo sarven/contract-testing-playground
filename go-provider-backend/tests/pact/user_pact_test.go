@@ -56,24 +56,20 @@ func TestServerPact_Verification(t *testing.T) {
 		DisableToolValidityCheck: true,
 	}
 
-	// _, err := pact.VerifyProvider(t, types.VerifyRequest{
-	// 	ProviderBaseURL:            "http://127.0.0.1:8080",   //provider's URL
-	// 	BrokerURL:                  "https://pen.pactflow.io", //link to your remote Contract broker
-	// 	BrokerToken:                "jEQnxw7xWgYRv-3-G7Cx-g",  //your PactFlow token
-	// 	PublishVerificationResults: true,
-	// 	ProviderVersion:            "1.0.0",
-	// })
+	brokerURL := os.Getenv("PACT_BROKER_URL")
+	brokerToken := os.Getenv("PACT_BROKER_TOKEN")
+	providerVersion := os.Getenv("PROVIDER_VERSION")
 
-	// if err != nil {
-	// 	t.Fatal(err)
-	// }
+	if brokerURL == "" || brokerToken == "" || providerVersion == "" {
+		t.Fatal("PACT_BROKER_URL, PACT_BROKER_TOKEN, or PROVIDER_VERSION is not set")
+	}
 
 	_, err = pact.VerifyProvider(t, types.VerifyRequest{
-		ProviderBaseURL: "http://127.0.0.1:8081",
-		PactURLs: []string{
-			filepath.ToSlash(fmt.Sprintf("%s/PHPBackendConsumer-Backend.json", pactDir)),
-			filepath.ToSlash(fmt.Sprintf("%s/ReactFrontend-Backend.json", pactDir)),
-		},
+		ProviderBaseURL:            "http://127.0.0.1:8081",
+		BrokerURL:                  brokerURL,
+		BrokerToken:                brokerToken,
+		PublishVerificationResults: true,
+		ProviderVersion:            providerVersion,
 	})
 
 	if err != nil {

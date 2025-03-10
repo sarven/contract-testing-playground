@@ -42,6 +42,10 @@ jobs:
       - name: Run Pact contract tests
         working-directory: react-frontend
         run: make test-contract
+        env:
+          PACT_BROKER_URL: ${{ secrets.PACT_BROKER_URL }}
+          PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
+          CONSUMER_VERSION: ${{ steps.get_commit.outputs.commit_hash }}
 
       - name: Stop Docker Compose services
         if: always()

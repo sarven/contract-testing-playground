@@ -21,7 +21,7 @@ final readonly class HttpUsersClient implements UsersClientInterface
 
     public function getUserDetails(int $id): UserDetails
     {
-        $response = $this->httpClient->request('GET', new Uri("{$this->baseUri}/users/{$id}"));
+        $response = $this->httpClient->request('GET', new Uri("{$this->baseUri}/api/users/{$id}"));
         $body = (string) $response->getBody();
         $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
 

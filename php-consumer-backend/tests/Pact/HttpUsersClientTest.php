@@ -39,7 +39,7 @@ final class HttpUsersClientTest extends TestCase
             ->with(
                 (new ConsumerRequest())
                 ->setMethod('GET')
-                ->setPath('/users/1')
+                ->setPath('/api/users/1')
             )
             ->willRespondWith(
                 (new ProviderResponse())

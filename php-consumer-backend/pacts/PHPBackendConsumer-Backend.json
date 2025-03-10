@@ -12,7 +12,7 @@
       ],
       "request": {
         "method": "GET",
-        "path": "/users/1"
+        "path": "/api/users/1"
       },
       "response": {
         "body": {

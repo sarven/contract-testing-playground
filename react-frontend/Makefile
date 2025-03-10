@@ -5,4 +5,5 @@ test-contract:
 	docker compose exec frontend npm run test:contract
 
 publish-contracts:
+	docker compose exec ls -la pacts
 	docker compose exec frontend pact-broker publish pacts --consumer-app-version $$CONSUMER_VERSION --broker-base-url $$PACT_BROKER_URL --broker-token $$PACT_BROKER_TOKEN

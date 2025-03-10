@@ -43,6 +43,10 @@ jobs:
         working-directory: go-provider-backend
         run: make test
 
+      - name: Run contract tests
+        working-directory: go-provider-backend
+        run: make test-contract
+
       - name: Stop Docker Compose services
         if: always()
         working-directory: go-provider-backend

@@ -47,18 +47,14 @@ jobs:
         id: get_commit
         run: echo "::set-output name=commit_hash::$(git rev-parse HEAD)"
 
-      - name: Verify environment variables
+      - name: Publish Pact files
+        uses: pactflow/actions/publish-pact-files@v2
         working-directory: react-frontend
-        run: |
-          echo "PACT_BROKER_URL=${{ secrets.PACT_BROKER_URL }}"
-
-      - name: Publish Pact contracts
-        working-directory: react-frontend
-        run: make publish-contracts
-        env:
-          PACT_BROKER_URL: ${{ secrets.PACT_BROKER_URL }}
-          PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
-          CONSUMER_VERSION: ${{ steps.get_commit.outputs.commit_hash }}
+        with:
+          pactfiles: pacts/*.json
+          version: ${{ steps.get_commit.outputs.commit_hash }}
+          broker_url: ${{ secrets.PACT_BROKER_BASE_URL }}
+          token: ${{ secrets.PACT_BROKER_TOKEN }}
 
       - name: Stop Docker Compose services
         if: always()

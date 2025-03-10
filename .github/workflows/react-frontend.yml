@@ -43,15 +43,10 @@ jobs:
         working-directory: react-frontend
         run: make test-contract
 
-      - name: Get commit hash
-        id: get_commit
-        run: echo "::set-output name=commit_hash::$(git rev-parse HEAD)"
-
       - name: Publish Pact files
         uses: pactflow/actions/publish-pact-files@v2
         with:
           pactfiles: react-frontend/pacts/*.json
-          version: ${{ steps.get_commit.outputs.commit_hash }}
           broker_url: ${{ secrets.PACT_BROKER_URL }}
           token: ${{ secrets.PACT_BROKER_TOKEN }}
 

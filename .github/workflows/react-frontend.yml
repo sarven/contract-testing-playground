@@ -47,6 +47,11 @@ jobs:
         id: get_commit
         run: echo "::set-output name=commit_hash::$(git rev-parse HEAD)"
 
+      - name: Verify environment variables
+        working-directory: react-frontend
+        run: |
+          echo "PACT_BROKER_URL=${{ secrets.PACT_BROKER_URL }}"
+
       - name: Publish Pact contracts
         working-directory: react-frontend
         run: make publish-contracts

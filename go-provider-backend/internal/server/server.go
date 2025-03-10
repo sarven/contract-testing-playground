@@ -13,7 +13,14 @@ import (
 	"go-rest-api/internal/repository"
 )
 
-func SetupServer() http.Handler {
+func SetupServer(port int) {
+	router := SetupRouter()
+
+	log.Printf("Server running on port %d", port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), router))
+}
+
+func SetupRouter() http.Handler {
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {
 		log.Fatal("DATABASE_URL is not set")
@@ -30,7 +37,7 @@ func SetupServer() http.Handler {
 	userHandler := handler.NewUserHandler(userRepo)
 
 	r := mux.NewRouter()
-	r.HandleFunc("/users/{id}", userHandler.GetUser).Methods("GET")
+	r.HandleFunc("/api/users/{id}", userHandler.GetUser).Methods("GET")
 
 	return r
 }

@@ -41,8 +41,8 @@ func TestGetUser(t *testing.T) {
 	}
 
 	// When
-	router := server.SetupServer()
-	req, _ := http.NewRequest("GET", fmt.Sprintf("/users/%d", user.ID), nil)
+	router := server.SetupRouter()
+	req, _ := http.NewRequest("GET", fmt.Sprintf("/api/users/%d", user.ID), nil)
 	rr := httptest.NewRecorder()
 	router.ServeHTTP(rr, req)
 

@@ -26,11 +26,13 @@ func (h *UserHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user, err := h.Repo.GetUserByID(r.Context(), id)
+
+	w.Header().Set("Content-Type", "application/json")
+
 	if err != nil {
 		http.Error(w, fmt.Sprintf("User %d not found", id), http.StatusNotFound)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(user)
 }

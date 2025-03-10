@@ -6,4 +6,4 @@ test-contract:
 
 publish-contracts:
 	docker compose exec frontend ls -la pacts
-	docker compose exec frontend pact-broker publish pacts --consumer-app-version $$CONSUMER_VERSION --broker-base-url $$PACT_BROKER_URL --broker-token $$PACT_BROKER_TOKEN
+	docker compose exec frontend pact-broker publish /app/pacts --consumer-app-version $$CONSUMER_VERSION --broker-base-url $$PACT_BROKER_URL --broker-token $$PACT_BROKER_TOKEN

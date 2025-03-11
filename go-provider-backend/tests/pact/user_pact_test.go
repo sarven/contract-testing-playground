@@ -11,7 +11,6 @@ import (
 	"go-rest-api/internal/server"
 	"log"
 	"os"
-	"path/filepath"
 	"testing"
 )
 

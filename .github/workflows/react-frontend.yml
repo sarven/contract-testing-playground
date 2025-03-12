@@ -50,6 +50,22 @@ jobs:
           broker_url: ${{ secrets.PACT_BROKER_URL }}
           token: ${{ secrets.PACT_BROKER_TOKEN }}
 
+      - name: Can I deploy
+        uses: pactflow/actions/can-i-deploy@v2
+        with:
+          to_environment: "production"
+          application_name: "ReactFrontend"
+          broker_url: ${{ secrets.PACT_BROKER_URL }}
+          token: ${{ secrets.PACT_BROKER_TOKEN }}
+
+      - name: Record deployment
+        uses: pactflow/actions/record-deployment@v2
+        with:
+          environment: "production"
+          application_name: "ReactFrontend"
+          broker_url: ${{ secrets.PACT_BROKER_URL }}
+          token: ${{ secrets.PACT_BROKER_TOKEN }}
+
       - name: Stop Docker Compose services
         if: always()
         working-directory: react-frontend

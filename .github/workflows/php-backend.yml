@@ -57,6 +57,7 @@ jobs:
           application_name: "PHPBackendConsumer"
           broker_url: ${{ secrets.PACT_BROKER_URL }}
           token: ${{ secrets.PACT_BROKER_TOKEN }}
+          to: "main"
 
       - name: Record deployment
         uses: pactflow/actions/record-deployment@v2

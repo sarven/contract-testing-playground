@@ -43,6 +43,10 @@ jobs:
         working-directory: go-provider-backend
         run: make test
 
+      - name: Get commit hash
+        id: get_commit
+        run: echo "::set-output name=commit_hash::$(git rev-parse HEAD)"
+
       - name: Run contract tests
         working-directory: go-provider-backend
         run: make test-contract
@@ -50,10 +54,6 @@ jobs:
           PACT_BROKER_URL: ${{ secrets.PACT_BROKER_URL }}
           PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
           PROVIDER_VERSION: ${{ steps.get_commit.outputs.commit_hash }}
-
-      - name: Get commit hash
-        id: get_commit
-        run: echo "::set-output name=commit_hash::$(git rev-parse HEAD)"
 
   can_i_deploy:
     runs-on: ubuntu-latest

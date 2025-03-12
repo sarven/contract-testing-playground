@@ -43,6 +43,10 @@ jobs:
         working-directory: go-provider-backend
         run: make test
 
+      - name: Get commit hash
+        id: get_commit
+        run: echo "::set-output name=commit_hash::$(git rev-parse HEAD)"
+
       - name: Run contract tests
         working-directory: go-provider-backend
         run: make test-contract

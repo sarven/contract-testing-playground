@@ -12,4 +12,3 @@ bash:
 
 test-contract:
 	docker compose exec app vendor/bin/phpunit --config=phpunit.xml.dist --testsuite "Contract Tests"
-

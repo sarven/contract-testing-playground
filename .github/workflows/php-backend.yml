@@ -53,11 +53,10 @@ jobs:
       - name: Can I deploy
         uses: pactflow/actions/can-i-deploy@v2
         with:
-          to_environment: "production"
           application_name: "PHPBackendConsumer"
           broker_url: ${{ secrets.PACT_BROKER_URL }}
           token: ${{ secrets.PACT_BROKER_TOKEN }}
-          to: "main"
+          to: "production"
 
       - name: Record deployment
         uses: pactflow/actions/record-deployment@v2

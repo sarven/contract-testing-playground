@@ -49,7 +49,7 @@ jobs:
         env:
           PACT_BROKER_URL: ${{ secrets.PACT_BROKER_URL }}
           PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
-          PROVIDER_VERSION: ${{ needs.test.outputs.commit_hash }}
+          PROVIDER_VERSION: ${{ steps.get_commit.outputs.commit_hash }}
 
       - name: Get commit hash
         id: get_commit

@@ -1,4 +1,4 @@
-name: PHP Backend
+name: Go Backend
 
 on:
   push:
@@ -43,17 +43,25 @@ jobs:
         working-directory: go-provider-backend
         run: make test
 
-      - name: Get commit hash
-        id: get_commit
-        run: echo "::set-output name=commit_hash::$(git rev-parse HEAD)"
-
       - name: Run contract tests
         working-directory: go-provider-backend
         run: make test-contract
         env:
           PACT_BROKER_URL: ${{ secrets.PACT_BROKER_URL }}
           PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
-          PROVIDER_VERSION: ${{ steps.get_commit.outputs.commit_hash }}
+          PROVIDER_VERSION: ${{ needs.test.outputs.commit_hash }}
+
+      - name: Get commit hash
+        id: get_commit
+        run: echo "::set-output name=commit_hash::$(git rev-parse HEAD)"
+
+  can_i_deploy:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Can I deploy
         uses: pactflow/actions/can-i-deploy@v2
@@ -62,6 +70,14 @@ jobs:
           application_name: "Backend"
           broker_url: ${{ secrets.PACT_BROKER_URL }}
           token: ${{ secrets.PACT_BROKER_TOKEN }}
+
+  release:
+    runs-on: ubuntu-latest
+    needs: can_i_deploy
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Record deployment
         uses: pactflow/actions/record-deployment@v2

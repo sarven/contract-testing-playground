@@ -49,7 +49,7 @@ func TestServerPact_Verification(t *testing.T) {
 	var logDir = fmt.Sprintf("%s/log", dir)
 
 	pact := &dsl.Pact{
-		Provider:                 "Go Backend Provider",
+		Provider:                 "Backend",
 		LogDir:                   logDir,
 		PactDir:                  pactDir,
 		DisableToolValidityCheck: true,

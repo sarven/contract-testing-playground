@@ -1,17 +1,14 @@
 package tests
 
 import (
-	"context"
 	"fmt"
-	"github.com/jackc/pgx/v5"
-	"github.com/pact-foundation/pact-go/dsl"
-	"github.com/pact-foundation/pact-go/types"
-	"go-rest-api/internal/model"
-	"go-rest-api/internal/repository"
 	"go-rest-api/internal/server"
-	"log"
+	"go-rest-api/tests/fixtures"
 	"os"
 	"testing"
+
+	"github.com/pact-foundation/pact-go/dsl"
+	"github.com/pact-foundation/pact-go/types"
 )
 
 func startProvider() {
@@ -19,28 +16,7 @@ func startProvider() {
 }
 
 func TestServerPact_Verification(t *testing.T) {
-	dbURL := os.Getenv("DATABASE_URL")
-	if dbURL == "" {
-		log.Fatal("DATABASE_URL is not set")
-	}
-
-	conn, err := pgx.Connect(context.Background(), dbURL)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		os.Exit(1)
-	}
-	defer conn.Close(context.Background())
-
-	repo := &repository.PostgresUserRepository{Conn: conn}
-
-	user := &model.User{
-		Name:  "John Doe",
-		Email: "john.doe@example.com",
-	}
-	err = repo.CreateUser(context.Background(), user)
-	if err != nil {
-		t.Fatalf("Failed to add user to database: %v", err)
-	}
+	fixtures.GivenUser("John Doe", "john.doe@example.com")
 
 	go startProvider()
 
@@ -63,7 +39,7 @@ func TestServerPact_Verification(t *testing.T) {
 		t.Fatal("PACT_BROKER_URL, PACT_BROKER_TOKEN, or PROVIDER_VERSION is not set")
 	}
 
-	_, err = pact.VerifyProvider(t, types.VerifyRequest{
+	_, err := pact.VerifyProvider(t, types.VerifyRequest{
 		ProviderBaseURL:            "http://127.0.0.1:8081",
 		BrokerURL:                  brokerURL,
 		BrokerToken:                brokerToken,

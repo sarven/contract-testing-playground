@@ -29,7 +29,7 @@ final class HttpUsersClientTest extends TestCase
         $this->pact = new InteractionBuilder($config);
     }
 
-    public function testGetUserDetails()
+    public function testGetUserDetails(): void
     {
         $matcher = new Matcher();
 

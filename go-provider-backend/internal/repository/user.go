@@ -17,7 +17,7 @@ type PostgresUserRepository struct {
 
 func (r *PostgresUserRepository) GetUserByID(ctx context.Context, id int) (*model.User, error) {
 	user := &model.User{}
-	err := r.Conn.QueryRow(ctx, "SELECT id, name, email FROM users WHERE id=$1", id).Scan(&user.ID, &user.Name, &user.Email)
+	err := r.Conn.QueryRow(ctx, "SELECT id, email FROM users WHERE id=$1", id).Scan(&user.ID, &user.Email)
 	if err != nil {
 		return nil, err
 	}
@@ -25,6 +25,6 @@ func (r *PostgresUserRepository) GetUserByID(ctx context.Context, id int) (*mode
 }
 
 func (r *PostgresUserRepository) CreateUser(ctx context.Context, user *model.User) error {
-	err := r.Conn.QueryRow(ctx, "INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id", user.Name, user.Email).Scan(&user.ID)
+	err := r.Conn.QueryRow(ctx, "INSERT INTO users (email) VALUES ($1) RETURNING id", user.Email).Scan(&user.ID)
 	return err
 }

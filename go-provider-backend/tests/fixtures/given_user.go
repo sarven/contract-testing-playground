@@ -11,7 +11,7 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func GivenUser(email string) *model.User {
+func GivenUser(name string, email string) *model.User {
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {
 		log.Fatal("DATABASE_URL is not set")
@@ -27,6 +27,7 @@ func GivenUser(email string) *model.User {
 	repo := &repository.PostgresUserRepository{Conn: conn}
 
 	user := &model.User{
+		Name:  name,
 		Email: email,
 	}
 	err = repo.CreateUser(context.Background(), user)

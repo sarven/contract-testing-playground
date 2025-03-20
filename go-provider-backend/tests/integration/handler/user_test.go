@@ -13,7 +13,7 @@ import (
 
 func TestGetUser(t *testing.T) {
 	// Given
-	user := fixtures.GivenUser("john.doe@example.com")
+	user := fixtures.GivenUser("John Doe", "john.doe@example.com")
 
 	// When
 	router := server.SetupRouter()
@@ -32,7 +32,7 @@ func TestGetUser(t *testing.T) {
 		t.Fatalf("Failed to decode response body: %v", err)
 	}
 
-	if returnedUser.Email != "john.doe@example.com" {
+	if returnedUser.Name != "John Doe" || returnedUser.Email != "john.doe@example.com" {
 		t.Errorf("Expected user %v. Got %v\n", user, returnedUser)
 	}
 }

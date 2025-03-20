@@ -16,7 +16,7 @@ func startProvider() {
 }
 
 func TestServerPact_Verification(t *testing.T) {
-	fixtures.GivenUser("john.doe@example.com")
+	fixtures.GivenUser("John Doe", "john.doe@example.com")
 
 	go startProvider()
 

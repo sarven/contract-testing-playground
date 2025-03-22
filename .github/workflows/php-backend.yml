@@ -54,8 +54,8 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
+    environment: production
     needs: test
-    if: github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout repository

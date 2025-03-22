@@ -6,9 +6,6 @@ on:
       - 'php-consumer-backend/**'
     branches:
       - main
-  pull_request:
-    paths:
-      - 'php-consumer-backend/**'
 
 jobs:
   test:

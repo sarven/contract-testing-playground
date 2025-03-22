@@ -6,9 +6,6 @@ on:
       - 'react-frontend/**'
     branches:
       - main
-  pull_request:
-    paths:
-      - 'react-frontend/**'
 
 jobs:
   test:

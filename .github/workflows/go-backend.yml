@@ -6,9 +6,9 @@ on:
       - 'go-provider-backend/**'
     branches:
       - main
-  pull_request:
-    paths:
-      - 'go-provider-backend/**'
+  repository_dispatch:
+    types:
+      - contract_requiring_verification_published
 
 jobs:
   test:

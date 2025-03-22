@@ -6,9 +6,7 @@ on:
       - 'go-provider-backend/**'
     branches:
       - main
-  repository_dispatch:
-    types:
-      - contract_requiring_verification_published
+  workflow_dispatch:
 
 jobs:
   test:

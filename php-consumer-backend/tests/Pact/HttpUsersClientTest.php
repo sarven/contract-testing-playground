@@ -47,7 +47,7 @@ final class HttpUsersClientTest extends TestCase
                 ->setHeaders(['Content-Type' => 'application/json'])
                 ->setBody([
                     'id' => $matcher->like(1),
-                    'email' => $matcher->like('john.doe@example.com'),
+                    'emaill' => $matcher->like('john.doe@example.com'),
                 ]),
             );
 

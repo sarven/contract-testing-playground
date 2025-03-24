@@ -25,6 +25,6 @@ final readonly class HttpUsersClient implements UsersClientInterface
         $body = (string) $response->getBody();
         $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
 
-        return new UserDetails($data['id'], $data['email']);
+        return new UserDetails($data['id'], $data['emaill']);
     }
 }

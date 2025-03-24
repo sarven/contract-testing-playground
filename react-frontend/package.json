@@ -12,6 +12,7 @@
     "test:contract": "jest --config jest.config.pact.cjs"
   },
   "dependencies": {
+    "@testing-library/dom": "^10.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
